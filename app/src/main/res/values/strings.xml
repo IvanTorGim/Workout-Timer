@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Workout Timer</string>
+    <string name="for_time">For Time</string>
+    <string name="emom">Emom</string>
+    <string name="amrap">Amrap</string>
+    <string name="go_back">Go back</string>
+    <string name="start">Start</string>
+</resources>
