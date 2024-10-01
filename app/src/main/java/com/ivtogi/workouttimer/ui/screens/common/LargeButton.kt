@@ -12,11 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LargeButton(@StringRes textRes: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun LargeButton(@StringRes textRes: Int, onClick: () -> Unit) {
     Button(
-        onClick = { onClick() }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp, 8.dp)
+        onClick = { onClick() },
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             stringResource(id = textRes),
