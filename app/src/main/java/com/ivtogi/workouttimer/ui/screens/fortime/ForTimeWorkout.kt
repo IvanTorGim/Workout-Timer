@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -15,12 +15,17 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ivtogi.workouttimer.R
+import com.ivtogi.workouttimer.data.Exercise
+import com.ivtogi.workouttimer.ui.screens.common.ExerciseItem
 
 @Composable
-fun ForTimeWorkoutSection(workout: List<String>, onAddExerciseClicked: () -> Unit) {
+fun ForTimeWorkoutSection(
+    workout: List<Exercise>,
+    onAddExerciseClicked: () -> Unit,
+    onDeleteExercise: (Int) -> Unit
+) {
     Text(
         text = stringResource(id = R.string.workout),
         style = MaterialTheme.typography.titleLarge
@@ -29,11 +34,11 @@ fun ForTimeWorkoutSection(workout: List<String>, onAddExerciseClicked: () -> Uni
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(workout) {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.headlineSmall,
-                overflow = TextOverflow.Ellipsis
+        itemsIndexed(items = workout) { index, exercise ->
+            ExerciseItem(
+                exercise = exercise,
+                index = index,
+                onDelete = { onDeleteExercise(index) }
             )
         }
         item {

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivtogi.workouttimer.R
+import com.ivtogi.workouttimer.data.Exercise
 import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 import com.ivtogi.workouttimer.ui.screens.common.AddExerciseDialog
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
@@ -52,7 +53,9 @@ fun ForTimeScreen(
             Spacer(modifier = Modifier.height(32.dp))
             ForTimeWorkoutSection(
                 workout = state.workout,
-                onAddExerciseClicked = { viewModel.showDialog() })
+                onAddExerciseClicked = { viewModel.showDialog() },
+                onDeleteExercise = { viewModel.deleteExercise(it) }
+            )
             Spacer(modifier = Modifier.weight(1f))
             LargeButton(
                 textRes = R.string.start,
@@ -62,8 +65,7 @@ fun ForTimeScreen(
                 AddExerciseDialog(
                     addExercise = { quantity, exercise ->
                         viewModel.addExercise(
-                            quantity,
-                            exercise
+                            Exercise(quantity, exercise)
                         )
                     },
                     hideDialog = { viewModel.hideDialog() }

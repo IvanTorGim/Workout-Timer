@@ -1,8 +1,9 @@
 package com.ivtogi.workouttimer.ui.screens.fortime
 
 import androidx.lifecycle.ViewModel
+import com.ivtogi.workouttimer.data.Exercise
 import com.ivtogi.workouttimer.ui.formatNumberField
-import com.ivtogi.workouttimer.ui.screens.fortime.UiState.*
+import com.ivtogi.workouttimer.ui.screens.fortime.UiState.FormatType
 import com.ivtogi.workouttimer.ui.screens.fortime.UiState.FormatType.HOURS
 import com.ivtogi.workouttimer.ui.screens.fortime.UiState.FormatType.MINUTES
 import com.ivtogi.workouttimer.ui.screens.fortime.UiState.FormatType.SECONDS
@@ -23,13 +24,19 @@ class ForTimeViewModel : ViewModel() {
         }
     }
 
-    fun addExercise(quantity: String, exercise: String) =
+    fun addExercise(exercise: Exercise) =
         _state.update {
             it.copy(
-                workout = it.workout + "- $quantity $exercise",
+                workout = it.workout + exercise,
                 showDialog = false
             )
         }
+
+    fun deleteExercise(index: Int) {
+        val list = _state.value.workout.toMutableList()
+        list.removeAt(index)
+        _state.update { it.copy(workout = list) }
+    }
 
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
@@ -39,7 +46,7 @@ data class UiState(
     val hours: String = "",
     val minutes: String = "",
     val seconds: String = "",
-    val workout: List<String> = emptyList(),
+    val workout: List<Exercise> = emptyList(),
     val showDialog: Boolean = false
 ) {
     enum class FormatType {
