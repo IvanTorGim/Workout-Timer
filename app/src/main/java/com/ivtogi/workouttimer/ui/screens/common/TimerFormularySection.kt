@@ -19,10 +19,8 @@ import com.ivtogi.workouttimer.R
 
 @Composable
 fun TimerFormularySection(
-    hours: String,
     minutes: String,
     seconds: String,
-    onHoursChange: (String) -> Unit,
     onMinutesChange: (String) -> Unit,
     onSecondsChange: (String) -> Unit
 ) {
@@ -36,17 +34,6 @@ fun TimerFormularySection(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        OutlinedTextField(
-            value = hours,
-            onValueChange = onHoursChange,
-            suffix = { Text(text = "h") },
-            placeholder = { Text(text = "0") },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.NumberPassword,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.weight(1f)
-        )
         OutlinedTextField(
             value = minutes,
             onValueChange = onMinutesChange,
