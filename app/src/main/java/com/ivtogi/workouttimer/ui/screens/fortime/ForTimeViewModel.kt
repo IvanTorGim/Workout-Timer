@@ -56,7 +56,6 @@ class ForTimeViewModel : ViewModel() {
 
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
-    fun showTimer() = _state.update { it.copy(isConfigured = true) }
 }
 
 data class UiState(
@@ -70,8 +69,6 @@ data class UiState(
         Exercise("12", "m Row")
     ),
     val showDialog: Boolean = false,
-    val isConfigured: Boolean = false,
-    val isStarted: Boolean = false
 ) {
     enum class FormatType {
         MINUTES, SECONDS
