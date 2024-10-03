@@ -25,7 +25,8 @@ import com.ivtogi.workouttimer.ui.screens.common.TopBar
 @Composable
 fun ForTimeScreen(
     viewModel: ForTimeViewModel = viewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    navigateToTimer: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -68,7 +69,7 @@ fun ForTimeScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 LargeButton(
                     textRes = R.string.start,
-                    onClick = { TODO() }
+                    onClick = navigateToTimer
                 )
                 if (state.showDialog) {
                     AddExerciseDialog(
@@ -94,6 +95,6 @@ fun ForTimeScreen(
 )
 fun ForTimeScreenPreview() {
     WorkoutTimerScreen {
-        ForTimeScreen(onBackClick = {})
+        ForTimeScreen(onBackClick = {}, navigateToTimer = {})
     }
 }

@@ -8,6 +8,7 @@ import com.ivtogi.workouttimer.ui.screens.amrap.AmrapScreen
 import com.ivtogi.workouttimer.ui.screens.emom.EmomScreen
 import com.ivtogi.workouttimer.ui.screens.fortime.ForTimeScreen
 import com.ivtogi.workouttimer.ui.screens.home.HomeScreen
+import com.ivtogi.workouttimer.ui.screens.timer.TimerScreen
 
 @Composable
 fun Navigation(navHostController: NavHostController) {
@@ -20,7 +21,10 @@ fun Navigation(navHostController: NavHostController) {
             )
         }
         composable<ForTime> {
-            ForTimeScreen { navHostController.popBackStack() }
+            ForTimeScreen(
+                onBackClick = { navHostController.popBackStack() },
+                navigateToTimer = { navHostController.navigate(Timer) }
+            )
         }
 
         composable<Emom> {
@@ -29,6 +33,10 @@ fun Navigation(navHostController: NavHostController) {
 
         composable<Amrap> {
             AmrapScreen { navHostController.popBackStack() }
+        }
+
+        composable<Timer> {
+            TimerScreen()
         }
     }
 }

@@ -13,3 +13,6 @@ object Emom
 
 @Serializable
 object Amrap
+
+@Serializable
+object Timer
