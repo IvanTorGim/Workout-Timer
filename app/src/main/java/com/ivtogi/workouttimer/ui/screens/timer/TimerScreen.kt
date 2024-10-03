@@ -40,7 +40,7 @@ fun TimerScreen(
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Text(
-                        text = "${state.timer.minutes}:${state.timer.seconds}",
+                        text = "${state.minutes}:${state.seconds}",
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
@@ -58,11 +58,11 @@ fun TimerScreen(
                 ) {
                     Column {
                         Text(
-                            text = state.timer.minutes,
+                            text = state.minutes,
                             style = MaterialTheme.typography.displayLarge
                         )
                         Text(
-                            text = state.timer.seconds,
+                            text = state.seconds,
                             style = MaterialTheme.typography.displayLarge
                         )
 

@@ -42,31 +42,22 @@ fun ForTimeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp)
+                    .padding(32.dp, 8.dp)
             ) {
                 TimerFormularySection(
-                    minutes = state.timer.minutes,
-                    seconds = state.timer.seconds,
-                    onMinutesChange = {
-                        viewModel.formatTimerFields(
-                            it,
-                            UiState.FormatType.MINUTES
-                        )
-                    },
-                    onSecondsChange = {
-                        viewModel.formatTimerFields(
-                            it,
-                            UiState.FormatType.SECONDS
-                        )
-                    }
+                    minutes = state.minutes,
+                    seconds = state.seconds,
+                    onMinutesChange = { viewModel.onMinutesChanged(it) },
+                    onSecondsChange = { viewModel.onSecondsChanged(it) }
                 )
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 ForTimeWorkoutSection(
                     workout = state.workout,
                     onAddExerciseClicked = { viewModel.showDialog() },
-                    onDeleteExercise = { viewModel.deleteExercise(it) }
+                    onDeleteExercise = { viewModel.deleteExercise(it) },
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(16.dp))
                 LargeButton(
                     textRes = R.string.start,
                     onClick = navigateToTimer

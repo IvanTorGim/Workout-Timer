@@ -1,7 +1,8 @@
 package com.ivtogi.workouttimer.data
 
 data class Timer(
-    val minutes: String = "",
-    val seconds: String = "",
-    val rounds: String = ""
+    val initial: Int,
+    val end: Int,
+    val rounds: Int,
+    val workout: List<Exercise>
 )
