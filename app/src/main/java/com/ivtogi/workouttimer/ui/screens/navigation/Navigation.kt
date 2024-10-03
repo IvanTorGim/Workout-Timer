@@ -36,7 +36,7 @@ fun Navigation(navHostController: NavHostController) {
         }
 
         composable<Timer> {
-            TimerScreen()
+            TimerScreen { navHostController.popBackStack() }
         }
     }
 }

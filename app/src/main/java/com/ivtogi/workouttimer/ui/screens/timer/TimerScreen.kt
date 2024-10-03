@@ -21,18 +21,27 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.ui.toMinutes
+import com.ivtogi.workouttimer.ui.toSeconds
 
 @Composable
 fun TimerScreen(
-    viewModel: TimerScreenViewModel = viewModel()
+    viewModel: TimerScreenViewModel = viewModel(),
+    onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val localConfiguration = LocalConfiguration.current
-
     Scaffold(
-        topBar = { TopBar(title = R.string.for_time, onBackClick = {}) }
+        topBar = {
+            TopBar(
+                title = R.string.for_time,
+                secondaryText = "${state.timer.initial.toMinutes()}:${state.timer.initial.toSeconds()}",
+                onBackClick = onBackClick
+            )
+        }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
+
             if (localConfiguration.screenWidthDp > 600) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -40,11 +49,11 @@ fun TimerScreen(
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Text(
-                        text = "${state.minutes}:${state.seconds}",
+                        text = "${state.timer.initial.toMinutes()}:${state.timer.initial.toSeconds()}",
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
-                        text = state.workout.joinToString("  ") { it.toFormatString() },
+                        text = state.timer.workout.joinToString("  ") { it.toFormatString() },
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier.basicMarquee(velocity = 100.dp)
                     )
@@ -58,17 +67,17 @@ fun TimerScreen(
                 ) {
                     Column {
                         Text(
-                            text = state.minutes,
+                            text = state.timer.initial.toMinutes(),
                             style = MaterialTheme.typography.displayLarge
                         )
                         Text(
-                            text = state.seconds,
+                            text = state.timer.initial.toSeconds(),
                             style = MaterialTheme.typography.displayLarge
                         )
 
                     }
                     Text(
-                        text = state.workout.joinToString("  ") { it.toFormatString() },
+                        text = state.timer.workout.joinToString("  ") { it.toFormatString() },
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier.basicMarquee(velocity = 100.dp)
                     )
@@ -83,6 +92,6 @@ fun TimerScreen(
 @Preview(device = "spec:parent=pixel_5,orientation=landscape")
 fun TimerScreenPreview() {
     WorkoutTimerScreen {
-        TimerScreen()
+        TimerScreen() {}
     }
 }
