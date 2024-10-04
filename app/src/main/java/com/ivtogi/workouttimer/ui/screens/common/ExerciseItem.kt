@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.data.Exercise
+import com.ivtogi.workouttimer.domain.Exercise
 import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 
 @Composable

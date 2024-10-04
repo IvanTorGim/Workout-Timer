@@ -1,4 +1,4 @@
-package com.ivtogi.workouttimer.data
+package com.ivtogi.workouttimer.domain
 
 data class Exercise(
     val quantity: String = "",

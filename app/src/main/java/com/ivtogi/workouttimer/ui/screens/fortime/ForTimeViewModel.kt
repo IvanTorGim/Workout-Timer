@@ -1,7 +1,7 @@
 package com.ivtogi.workouttimer.ui.screens.fortime
 
 import androidx.lifecycle.ViewModel
-import com.ivtogi.workouttimer.data.Exercise
+import com.ivtogi.workouttimer.domain.Exercise
 import com.ivtogi.workouttimer.ui.formatNumberField
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

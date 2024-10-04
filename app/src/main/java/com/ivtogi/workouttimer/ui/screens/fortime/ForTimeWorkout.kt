@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.data.Exercise
+import com.ivtogi.workouttimer.domain.Exercise
 import com.ivtogi.workouttimer.ui.screens.common.ExerciseItem
 
 @Composable

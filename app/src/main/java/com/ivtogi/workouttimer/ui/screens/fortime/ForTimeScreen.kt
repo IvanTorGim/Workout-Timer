@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.data.Exercise
+import com.ivtogi.workouttimer.domain.Exercise
 import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 import com.ivtogi.workouttimer.ui.screens.common.AddExerciseDialog
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
