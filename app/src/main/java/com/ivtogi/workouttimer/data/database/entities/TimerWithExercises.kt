@@ -2,7 +2,6 @@ package com.ivtogi.workouttimer.data.database.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.ivtogi.workouttimer.domain.Exercise
 
 data class TimerWithExercises(
     @Embedded val timer: Timer,
