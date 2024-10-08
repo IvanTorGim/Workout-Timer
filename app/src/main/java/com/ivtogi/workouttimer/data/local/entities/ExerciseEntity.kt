@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "exercises")
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val timerId: Int,
-    val quantity: Int,
-    val name: String
+    val timerId: Int = 0,
+    val quantity: Int = 0,
+    val name: String = ""
 )

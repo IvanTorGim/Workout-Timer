@@ -2,8 +2,8 @@ package com.ivtogi.workouttimer.domain.model
 
 data class Timer(
     val id: Int = 0,
-    val initial: Int,
-    val end: Int,
-    val rounds: Int,
-    val workout: List<Exercise>
+    val initial: Int = 0,
+    val end: Int = 0,
+    val rounds: Int = 0,
+    val workout: List<Exercise> = emptyList()
 )
