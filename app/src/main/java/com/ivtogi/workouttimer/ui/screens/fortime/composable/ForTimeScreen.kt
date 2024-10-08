@@ -1,4 +1,4 @@
-package com.ivtogi.workouttimer.ui.screens.fortime
+package com.ivtogi.workouttimer.ui.screens.fortime.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.domain.Exercise
+import com.ivtogi.workouttimer.domain.model.Exercise
 import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 import com.ivtogi.workouttimer.ui.screens.common.AddExerciseDialog
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
 import com.ivtogi.workouttimer.ui.screens.common.TimerFormularySection
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.ui.screens.fortime.ForTimeViewModel
 
 @Composable
 fun ForTimeScreen(
@@ -66,7 +67,10 @@ fun ForTimeScreen(
                     AddExerciseDialog(
                         addExercise = { quantity, exercise ->
                             viewModel.addExercise(
-                                Exercise(quantity, exercise)
+                                Exercise(
+                                    quantity = quantity,
+                                    name = exercise
+                                )
                             )
                         },
                         hideDialog = { viewModel.hideDialog() }

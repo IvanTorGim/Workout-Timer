@@ -1,10 +1,10 @@
-package com.ivtogi.workouttimer.data.database.entities
+package com.ivtogi.workouttimer.data.local.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation
 
 data class TimerWithExercises(
-    @Embedded val timer: Timer,
+    @Embedded val timer: TimerEntity,
     @Relation(parentColumn = "id", entityColumn = "timerId")
-    val exercises: List<Exercise>
+    val exercises: List<ExerciseEntity>
 )

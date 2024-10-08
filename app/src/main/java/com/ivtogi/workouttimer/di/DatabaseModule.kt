@@ -2,7 +2,7 @@ package com.ivtogi.workouttimer.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ivtogi.workouttimer.data.database.AppDatabase
+import com.ivtogi.workouttimer.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

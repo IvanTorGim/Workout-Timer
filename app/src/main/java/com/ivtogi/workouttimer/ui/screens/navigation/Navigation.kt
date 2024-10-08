@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ivtogi.workouttimer.ui.screens.amrap.AmrapScreen
 import com.ivtogi.workouttimer.ui.screens.emom.EmomScreen
-import com.ivtogi.workouttimer.ui.screens.fortime.ForTimeScreen
+import com.ivtogi.workouttimer.ui.screens.fortime.composable.ForTimeScreen
 import com.ivtogi.workouttimer.ui.screens.home.HomeScreen
 import com.ivtogi.workouttimer.ui.screens.timer.TimerScreen
 

@@ -14,10 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.domain.Exercise
-import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
+import com.ivtogi.workouttimer.domain.model.Exercise
 
 @Composable
 fun ExerciseItem(
@@ -41,13 +39,5 @@ fun ExerciseItem(
                 contentDescription = stringResource(id = R.string.delete)
             )
         }
-    }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-fun ExerciseItemPreview() {
-    WorkoutTimerScreen {
-        ExerciseItem(Exercise("12", "pullups"), 1, {})
     }
 }
