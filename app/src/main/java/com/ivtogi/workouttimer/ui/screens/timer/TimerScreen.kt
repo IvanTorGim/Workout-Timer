@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.ui.WorkoutTimerScreen
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.ui.theme.WorkoutTimerTheme
 import com.ivtogi.workouttimer.ui.toMinutes
 import com.ivtogi.workouttimer.ui.toSeconds
 
@@ -91,7 +91,7 @@ fun TimerScreen(
 @Preview
 @Preview(device = "spec:parent=pixel_5,orientation=landscape")
 fun TimerScreenPreview() {
-    WorkoutTimerScreen {
+    WorkoutTimerTheme {
         TimerScreen() {}
     }
 }
