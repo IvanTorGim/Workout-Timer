@@ -19,10 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
+import com.ivtogi.workouttimer.core.toStringMinutes
+import com.ivtogi.workouttimer.core.toStringSeconds
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
 import com.ivtogi.workouttimer.ui.theme.WorkoutTimerTheme
-import com.ivtogi.workouttimer.ui.toMinutes
-import com.ivtogi.workouttimer.ui.toSeconds
 
 @Composable
 fun TimerScreen(
@@ -35,7 +35,7 @@ fun TimerScreen(
         topBar = {
             TopBar(
                 title = R.string.for_time,
-                secondaryText = "${state.timer.initial.toMinutes()}:${state.timer.initial.toSeconds()}",
+                secondaryText = "${state.timer.end.toStringMinutes()}:${state.timer.end.toStringSeconds()}",
                 onBackClick = onBackClick
             )
         }
@@ -49,7 +49,7 @@ fun TimerScreen(
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Text(
-                        text = "${state.timer.initial.toMinutes()}:${state.timer.initial.toSeconds()}",
+                        text = "${state.timer.initial.toStringMinutes()}:${state.timer.initial.toStringSeconds()}",
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
@@ -67,11 +67,11 @@ fun TimerScreen(
                 ) {
                     Column {
                         Text(
-                            text = state.timer.initial.toMinutes(),
+                            text = state.timer.initial.toStringMinutes(),
                             style = MaterialTheme.typography.displayLarge
                         )
                         Text(
-                            text = state.timer.initial.toSeconds(),
+                            text = state.timer.initial.toStringSeconds(),
                             style = MaterialTheme.typography.displayLarge
                         )
 
