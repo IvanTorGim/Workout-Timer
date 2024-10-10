@@ -13,30 +13,30 @@ import com.ivtogi.workouttimer.ui.screens.timer.TimerScreen
 
 @Composable
 fun Navigation(navHostController: NavHostController = rememberNavController()) {
-    NavHost(navController = navHostController, startDestination = Home) {
-        composable<Home> {
+    NavHost(navController = navHostController, startDestination = HomeRoute) {
+        composable<HomeRoute> {
             HomeScreen(
-                onForTimeClick = { navHostController.navigate(ForTime) },
-                onEmomClick = { navHostController.navigate(Emom) },
-                onAmrapClick = { navHostController.navigate(Amrap) }
+                onForTimeClick = { navHostController.navigate(ForTimeRoute) },
+                onEmomClick = { navHostController.navigate(EmomRoute) },
+                onAmrapClick = { navHostController.navigate(AmrapRoute) }
             )
         }
-        composable<ForTime> {
+        composable<ForTimeRoute> {
             ForTimeScreen(
                 onBackClick = { navHostController.popBackStack() },
-                navigateToTimer = { navHostController.navigate(Timer) }
+                navigateToTimer = { navHostController.navigate(TimerRoute(it)) }
             )
         }
 
-        composable<Emom> {
+        composable<EmomRoute> {
             EmomScreen { navHostController.popBackStack() }
         }
 
-        composable<Amrap> {
+        composable<AmrapRoute> {
             AmrapScreen { navHostController.popBackStack() }
         }
 
-        composable<Timer> {
+        composable<TimerRoute> {
             TimerScreen { navHostController.popBackStack() }
         }
     }

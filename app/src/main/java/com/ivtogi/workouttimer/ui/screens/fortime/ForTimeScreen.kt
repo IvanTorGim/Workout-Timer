@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,7 +26,7 @@ import com.ivtogi.workouttimer.ui.screens.fortime.composable.ForTimeWorkoutSecti
 fun ForTimeScreen(
     viewModel: ForTimeViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    navigateToTimer: () -> Unit
+    navigateToTimer: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -38,47 +39,51 @@ fun ForTimeScreen(
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp, 8.dp)
-            ) {
-                TimerFormularySection(
-                    minutes = state.minutes,
-                    seconds = state.seconds,
-                    onMinutesChange = { viewModel.onMinutesChanged(it) },
-                    onSecondsChange = { viewModel.onSecondsChanged(it) }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                ForTimeWorkoutSection(
-                    workout = state.workout,
-                    onAddExerciseClicked = { viewModel.showDialog() },
-                    onDeleteExercise = { viewModel.deleteExercise(it) },
-                    modifier = Modifier.weight(1f)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LargeButton(
-                    textRes = R.string.start,
-                    onClick = {
-                        viewModel.saveTimer()
-                        navigateToTimer()
-                    }
-                )
-                if (state.showDialog) {
-                    AddExerciseDialog(
-                        addExercise = { quantity, exercise ->
-                            viewModel.addExercise(
-                                Exercise(
-                                    quantity = quantity,
-                                    name = exercise
-                                )
-                            )
-                        },
-                        hideDialog = { viewModel.hideDialog() }
+            if (state.loading) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(32.dp, 8.dp)
+                ) {
+                    TimerFormularySection(
+                        minutes = state.minutes,
+                        seconds = state.seconds,
+                        onMinutesChange = { viewModel.onMinutesChanged(it) },
+                        onSecondsChange = { viewModel.onSecondsChanged(it) }
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    ForTimeWorkoutSection(
+                        workout = state.workout,
+                        onAddExerciseClicked = { viewModel.showDialog() },
+                        onDeleteExercise = { viewModel.deleteExercise(it) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LargeButton(
+                        textRes = R.string.start,
+                        onClick = {
+                            viewModel.saveTimer(navigateToTimer)
+                        }
+                    )
+                    if (state.showDialog) {
+                        AddExerciseDialog(
+                            addExercise = { quantity, exercise ->
+                                viewModel.addExercise(
+                                    Exercise(
+                                        quantity = quantity,
+                                        name = exercise
+                                    )
+                                )
+                            },
+                            hideDialog = { viewModel.hideDialog() }
+                        )
+                    }
                 }
             }
-
         }
     }
 }

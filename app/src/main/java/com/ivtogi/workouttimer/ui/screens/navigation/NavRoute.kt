@@ -3,16 +3,16 @@ package com.ivtogi.workouttimer.ui.screens.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Home
+object HomeRoute
 
 @Serializable
-object ForTime
+object ForTimeRoute
 
 @Serializable
-object Emom
+object EmomRoute
 
 @Serializable
-object Amrap
+object AmrapRoute
 
 @Serializable
-object Timer
+data class TimerRoute(val id: Int)

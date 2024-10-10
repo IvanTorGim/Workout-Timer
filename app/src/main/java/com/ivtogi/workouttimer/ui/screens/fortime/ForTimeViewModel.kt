@@ -1,12 +1,16 @@
 package com.ivtogi.workouttimer.ui.screens.fortime
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivtogi.workouttimer.core.Constants
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_TEXT_FIELD_MINUTES
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_TEXT_FIELD_SECONDS
 import com.ivtogi.workouttimer.domain.model.Exercise
 import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
-import com.ivtogi.workouttimer.ui.formatNumberField
+import com.ivtogi.workouttimer.core.toIntMinutes
+import com.ivtogi.workouttimer.core.formatNumberField
+import com.ivtogi.workouttimer.core.toIntSeconds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,11 +27,11 @@ class ForTimeViewModel @Inject constructor(
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     fun onMinutesChanged(value: String) = _state.update {
-        it.copy(minutes = value.formatNumberField(60))
+        it.copy(minutes = value.formatNumberField(LIMIT_TEXT_FIELD_MINUTES))
     }
 
     fun onSecondsChanged(value: String) = _state.update {
-        it.copy(seconds = value.formatNumberField(60))
+        it.copy(seconds = value.formatNumberField(LIMIT_TEXT_FIELD_SECONDS))
     }
 
     fun addExercise(exercise: Exercise) = _state.update {
@@ -43,17 +47,14 @@ class ForTimeViewModel @Inject constructor(
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
 
-    private fun formatMinutes(): Int =
-        if (_state.value.minutes.isEmpty()) 0 else _state.value.minutes.toInt() * 60
-
-    private fun formatSeconds(): Int =
-        if (_state.value.minutes.isEmpty()) 0 else _state.value.minutes.toInt()
-
-    fun saveTimer() {
-        val endTime = formatMinutes() * formatSeconds()
+    fun saveTimer(navigateToTimer: (Int) -> Unit) {
+        val endTime = _state.value.minutes.toIntMinutes() + _state.value.seconds.toIntSeconds()
         val timer = Timer(end = endTime, workout = _state.value.workout)
         viewModelScope.launch {
-            localStorageRepository.saveTimerWithExercises(timer)
+            _state.update { it.copy(loading = true) }
+            val timerId = localStorageRepository.saveTimerWithExercises(timer).toInt()
+            navigateToTimer(timerId)
+            _state.update { it.copy(loading = false) }
         }
     }
 }
@@ -63,4 +64,5 @@ data class UiState(
     val seconds: String = "",
     val workout: List<Exercise> = listOf(),
     val showDialog: Boolean = false,
+    val loading: Boolean = false
 )
