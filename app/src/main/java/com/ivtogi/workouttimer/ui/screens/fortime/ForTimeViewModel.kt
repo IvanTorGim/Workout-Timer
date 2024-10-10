@@ -53,9 +53,7 @@ class ForTimeViewModel @Inject constructor(
         val endTime = formatMinutes() * formatSeconds()
         val timer = Timer(end = endTime, workout = _state.value.workout)
         viewModelScope.launch {
-            //TODO remove log
-            val insert = localStorageRepository.saveTimer(timer)
-            Log.i("ivan", insert.toString())
+            localStorageRepository.saveTimerWithExercises(timer)
         }
     }
 }
