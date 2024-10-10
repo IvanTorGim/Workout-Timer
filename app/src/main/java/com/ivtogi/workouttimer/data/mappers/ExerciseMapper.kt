@@ -9,8 +9,7 @@ fun ExerciseEntity.toDomain() = Exercise(
     name = name
 )
 
-fun Exercise.toEntity(timerId: Int) = ExerciseEntity(
-    timerId = timerId,
+fun Exercise.toEntity() = ExerciseEntity(
     quantity = quantity.toInt(),
     name = name
 )

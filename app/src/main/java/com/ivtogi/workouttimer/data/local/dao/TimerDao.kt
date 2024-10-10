@@ -26,12 +26,13 @@ interface TimerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTimerWithExercises(timer: TimerEntity, exercises: List<ExerciseEntity>) {
         val timerId = insertTimer(timer)
-        exercises.forEach { exercise -> insertExercise(exercise.copy(timerId = timerId.toInt())) }
+        val exercisesWithTimerId = exercises.map { it.copy(timerId = timerId.toInt()) }
+        insertExercisesList(exercisesWithTimerId)
     }
 
     @Query("SELECT * FROM exercises WHERE timerId = :timerId")
     suspend fun getExercisesByTimerId(timerId: Int): List<ExerciseEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExercise(exercise: ExerciseEntity): Long
+    suspend fun insertExercisesList(exercise: List<ExerciseEntity>)
 }

@@ -1,14 +1,24 @@
 package com.ivtogi.workouttimer.ui.screens.fortime
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ivtogi.workouttimer.domain.model.Exercise
+import com.ivtogi.workouttimer.domain.model.Timer
+import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
 import com.ivtogi.workouttimer.ui.formatNumberField
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ForTimeViewModel : ViewModel() {
+@HiltViewModel
+class ForTimeViewModel @Inject constructor(
+    private val localStorageRepository: LocalStorageRepository
+) : ViewModel() {
     private var _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
 
@@ -32,6 +42,22 @@ class ForTimeViewModel : ViewModel() {
 
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
+
+    private fun formatMinutes(): Int =
+        if (_state.value.minutes.isEmpty()) 0 else _state.value.minutes.toInt() * 60
+
+    private fun formatSeconds(): Int =
+        if (_state.value.minutes.isEmpty()) 0 else _state.value.minutes.toInt()
+
+    fun saveTimer() {
+        val endTime = formatMinutes() * formatSeconds()
+        val timer = Timer(end = endTime, workout = _state.value.workout)
+        viewModelScope.launch {
+            //TODO remove log
+            val insert = localStorageRepository.saveTimer(timer)
+            Log.i("ivan", insert.toString())
+        }
+    }
 }
 
 data class UiState(
