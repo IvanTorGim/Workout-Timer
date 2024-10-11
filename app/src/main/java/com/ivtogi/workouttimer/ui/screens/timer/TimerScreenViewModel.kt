@@ -8,6 +8,8 @@ import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
 import com.ivtogi.workouttimer.ui.screens.navigation.TimerRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,12 +29,35 @@ class TimerScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val timerRoute = savedStateHandle.toRoute<TimerRoute>()
             val timer = localStorageRepository.getTimerWithExercisesById(timerRoute.id)
-            _state.update { it.copy(timer = timer) }
+            _state.update { it.copy(timer = timer, actualTime = timer.initial) }
         }
     }
 
+    fun startTimer() {
+        _state.value.timerJob?.cancel()
+        val timerJob = viewModelScope.launch {
+            while (_state.value.actualTime < _state.value.timer.end) {
+                delay(1000)
+                _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
+            }
+        }
+        _state.update { it.copy(isStarted = true, timerJob = timerJob) }
+    }
+
+    fun pauseTimer() {
+        _state.value.timerJob?.cancel()
+        _state.update { it.copy(isStarted = false) }
+    }
+
+    fun resetTimer() {
+        _state.value.timerJob?.cancel()
+        _state.update { it.copy(actualTime = _state.value.timer.initial) }
+    }
 }
 
 data class UiState(
-    val timer: Timer = Timer()
+    val timer: Timer = Timer(),
+    val actualTime: Int = 0,
+    val isStarted: Boolean = false,
+    val timerJob: Job? = null
 )

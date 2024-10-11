@@ -13,4 +13,7 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="play_timer">Play timer</string>
+    <string name="reset_timer">Reset timer</string>
+    <string name="pause_timer">Pause timer</string>
 </resources>
