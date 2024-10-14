@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -51,21 +52,68 @@ fun TimerScreen(
             modifier = Modifier
                 .padding(paddingValues)
         ) {
-
             if (localConfiguration.screenWidthDp > 600) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(
-                        text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
-                        style = MaterialTheme.typography.displayLarge
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp, 0.dp)
+                    ) {
+                        if (state.actualTime != state.timer.initial) {
+                            IconButton(
+                                onClick = { viewModel.resetTimer() },
+                                modifier = Modifier
+                                    .align(Alignment.CenterStart)
+                                    .size(120.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Replay,
+                                    contentDescription = stringResource(id = R.string.reset_timer),
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+                        Text(
+                            text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
+                            style = MaterialTheme.typography.displayLarge,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                        if (state.isStarted) {
+                            IconButton(
+                                onClick = { viewModel.pauseTimer() },
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .size(120.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Pause,
+                                    contentDescription = stringResource(id = R.string.pause_timer),
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { viewModel.startTimer() },
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .size(120.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = stringResource(id = R.string.play_timer),
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+                    }
                     Text(
                         text = state.timer.workout.joinToString("  ") { it.toFormatString() },
                         style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.basicMarquee(velocity = 100.dp)
+                        modifier = Modifier.basicMarquee(velocity = if (state.isStarted) 100.dp else 0.dp)
                     )
                 }
             } else {
@@ -88,12 +136,12 @@ fun TimerScreen(
                     Text(
                         text = state.timer.workout.joinToString("  ") { it.toFormatString() },
                         style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.basicMarquee(velocity = 100.dp)
+                        modifier = Modifier.basicMarquee(velocity = if (state.isStarted) 100.dp else 0.dp)
                     )
                     if (state.isStarted) {
                         IconButton(
                             onClick = { viewModel.pauseTimer() },
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.size(120.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Pause,
@@ -105,7 +153,7 @@ fun TimerScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             IconButton(
                                 onClick = { viewModel.startTimer() },
-                                modifier = Modifier.size(80.dp)
+                                modifier = Modifier.size(120.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.PlayArrow,
@@ -116,7 +164,7 @@ fun TimerScreen(
                             if (state.actualTime != state.timer.initial) {
                                 IconButton(
                                     onClick = { viewModel.resetTimer() },
-                                    modifier = Modifier.size(80.dp)
+                                    modifier = Modifier.size(120.dp)
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Replay,

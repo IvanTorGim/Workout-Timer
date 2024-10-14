@@ -5,5 +5,5 @@ data class Exercise(
     val quantity: String = "",
     val name: String = ""
 ) {
-    fun toFormatString(): String = "-$quantity $name"
+    fun toFormatString(): String = "$quantity $name"
 }
