@@ -5,5 +5,10 @@ data class Timer(
     val initial: Int = 0,
     val end: Int = 0,
     val rounds: Int = 0,
-    val workout: List<Exercise> = emptyList()
-)
+    val workout: List<Exercise> = emptyList(),
+    val type: Type = Type.FOR_TIME
+) {
+    enum class Type {
+        FOR_TIME, EMOM, AMRAP
+    }
+}
