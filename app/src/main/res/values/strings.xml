@@ -16,4 +16,7 @@
     <string name="play_timer">Play timer</string>
     <string name="reset_timer">Reset timer</string>
     <string name="pause_timer">Pause timer</string>
+    <string name="amrap_description">As many rounds as possible</string>
+    <string name="rounds">Rounds</string>
+    <string name="for_time_description">As fast as possible</string>
 </resources>
