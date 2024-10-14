@@ -1,4 +1,4 @@
-package com.ivtogi.workouttimer.ui.screens.fortime.composable
+package com.ivtogi.workouttimer.ui.screens.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,10 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.domain.model.Exercise
-import com.ivtogi.workouttimer.ui.screens.common.ExerciseItem
 
 @Composable
-fun ForTimeWorkoutSection(
+fun WorkoutSection(
     workout: List<Exercise>,
     onAddExerciseClicked: () -> Unit,
     onDeleteExercise: (Int) -> Unit,
