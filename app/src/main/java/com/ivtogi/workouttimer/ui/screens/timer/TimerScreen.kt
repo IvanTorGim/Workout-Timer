@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,13 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.core.toStringMinutes
 import com.ivtogi.workouttimer.core.toStringSeconds
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerIconButton
 
 @Composable
 fun TimerScreen(
@@ -63,49 +60,32 @@ fun TimerScreen(
                             .fillMaxWidth()
                             .padding(16.dp, 0.dp)
                     ) {
-                        if (state.actualTime != state.timer.initial) {
-                            IconButton(
-                                onClick = { viewModel.resetTimer() },
-                                modifier = Modifier
-                                    .align(Alignment.CenterStart)
-                                    .size(120.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Replay,
-                                    contentDescription = stringResource(id = R.string.reset_timer),
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                            }
-                        }
+
                         Text(
                             text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
                             style = MaterialTheme.typography.displayLarge,
                             modifier = Modifier.align(Alignment.Center)
                         )
                         if (state.isStarted) {
-                            IconButton(
+                            TimerIconButton(
+                                icon = Icons.Default.Pause,
+                                contentDescription = R.string.pause_timer,
                                 onClick = { viewModel.pauseTimer() },
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .size(120.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Pause,
-                                    contentDescription = stringResource(id = R.string.pause_timer),
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                            }
+                                modifier = Modifier.align(Alignment.CenterEnd)
+                            )
                         } else {
-                            IconButton(
+                            TimerIconButton(
+                                icon = Icons.Default.PlayArrow,
+                                contentDescription = R.string.play_timer,
                                 onClick = { viewModel.startTimer() },
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .size(120.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = stringResource(id = R.string.play_timer),
-                                    modifier = Modifier.fillMaxSize()
+                                modifier = Modifier.align(Alignment.CenterEnd)
+                            )
+                            if (state.actualTime != state.timer.initial) {
+                                TimerIconButton(
+                                    icon = Icons.Default.Replay,
+                                    contentDescription = R.string.reset_timer,
+                                    onClick = { viewModel.resetTimer() },
+                                    modifier = Modifier.align(Alignment.CenterStart)
                                 )
                             }
                         }
@@ -139,39 +119,24 @@ fun TimerScreen(
                         modifier = Modifier.basicMarquee(velocity = if (state.isStarted) 100.dp else 0.dp)
                     )
                     if (state.isStarted) {
-                        IconButton(
+                        TimerIconButton(
+                            icon = Icons.Default.Pause,
+                            contentDescription = R.string.pause_timer,
                             onClick = { viewModel.pauseTimer() },
-                            modifier = Modifier.size(120.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Pause,
-                                contentDescription = stringResource(id = R.string.pause_timer),
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
+                        )
                     } else {
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            IconButton(
+                            TimerIconButton(
+                                icon = Icons.Default.PlayArrow,
+                                contentDescription = R.string.play_timer,
                                 onClick = { viewModel.startTimer() },
-                                modifier = Modifier.size(120.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = stringResource(id = R.string.play_timer),
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                            }
+                            )
                             if (state.actualTime != state.timer.initial) {
-                                IconButton(
+                                TimerIconButton(
+                                    icon = Icons.Default.Replay,
+                                    contentDescription = R.string.reset_timer,
                                     onClick = { viewModel.resetTimer() },
-                                    modifier = Modifier.size(120.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Replay,
-                                        contentDescription = stringResource(id = R.string.reset_timer),
-                                        modifier = Modifier.fillMaxSize()
-                                    )
-                                }
+                                )
                             }
                         }
                     }
