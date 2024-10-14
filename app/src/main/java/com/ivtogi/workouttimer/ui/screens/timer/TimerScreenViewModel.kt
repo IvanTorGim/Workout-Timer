@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ivtogi.workouttimer.domain.model.Timer
+import com.ivtogi.workouttimer.domain.model.Timer.Type.AMRAP
+import com.ivtogi.workouttimer.domain.model.Timer.Type.EMOM
+import com.ivtogi.workouttimer.domain.model.Timer.Type.FOR_TIME
 import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
 import com.ivtogi.workouttimer.ui.screens.navigation.TimerRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,19 +32,36 @@ class TimerScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val timerRoute = savedStateHandle.toRoute<TimerRoute>()
             val timer = localStorageRepository.getTimerWithExercisesById(timerRoute.id)
-            _state.update { it.copy(timer = timer, actualTime = timer.initial) }
+            when (_state.value.timer.type) {
+                FOR_TIME -> _state.update { it.copy(timer = timer, actualTime = timer.initial) }
+                EMOM, AMRAP -> _state.update { it.copy(timer = timer, actualTime = timer.end) }
+            }
         }
     }
 
     fun startTimer() {
         _state.value.timerJob?.cancel()
         val timerJob = viewModelScope.launch {
-            while (_state.value.actualTime < _state.value.timer.end) {
-                delay(1000)
-                _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
+            when (_state.value.timer.type) {
+                FOR_TIME -> increaseTime()
+                EMOM, AMRAP -> decreaseTime()
             }
         }
         _state.update { it.copy(isStarted = true, timerJob = timerJob) }
+    }
+
+    private suspend fun increaseTime() {
+        while (_state.value.actualTime < _state.value.timer.end) {
+            delay(1000)
+            _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
+        }
+    }
+
+    private suspend fun decreaseTime() {
+        while (_state.value.actualTime > _state.value.timer.end) {
+            delay(1000)
+            _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+        }
     }
 
     fun pauseTimer() {

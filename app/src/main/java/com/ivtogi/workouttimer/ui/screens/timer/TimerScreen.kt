@@ -21,11 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.core.toStringMinutes
 import com.ivtogi.workouttimer.core.toStringSeconds
+import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
 import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerIconButton
 
@@ -38,8 +40,13 @@ fun TimerScreen(
     val localConfiguration = LocalConfiguration.current
     Scaffold(
         topBar = {
+            val string = when (state.timer.type) {
+                Timer.Type.FOR_TIME -> R.string.for_time
+                Timer.Type.EMOM -> R.string.emom
+                Timer.Type.AMRAP -> R.string.amrap
+            }
             TopBar(
-                title = R.string.for_time,
+                title = string,
                 secondaryText = "${state.timer.end.toStringMinutes()}:${state.timer.end.toStringSeconds()}",
                 onBackClick = onBackClick
             )

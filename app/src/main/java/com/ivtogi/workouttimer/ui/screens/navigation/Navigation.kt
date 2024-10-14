@@ -33,7 +33,10 @@ fun Navigation(navHostController: NavHostController = rememberNavController()) {
         }
 
         composable<AmrapRoute> {
-            AmrapScreen { navHostController.popBackStack() }
+            AmrapScreen(
+                onBackClick = { navHostController.popBackStack() },
+                navigateToTimer = { navHostController.navigate(TimerRoute(it)) }
+            )
         }
 
         composable<TimerRoute> {
