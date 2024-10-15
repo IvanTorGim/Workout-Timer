@@ -32,22 +32,24 @@ class TimerScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val timerRoute = savedStateHandle.toRoute<TimerRoute>()
             val timer = localStorageRepository.getTimerWithExercisesById(timerRoute.id)
-            when (_state.value.timer.type) {
-                FOR_TIME -> _state.update { it.copy(timer = timer, actualTime = timer.initial) }
-                EMOM, AMRAP -> _state.update { it.copy(timer = timer, actualTime = timer.end) }
-            }
+            _state.update { it.copy(timer = timer, actualTime = _state.value.timer.countDown.seconds) }
         }
     }
 
     fun startTimer() {
         _state.value.timerJob?.cancel()
+        _state.update { it.copy(isPaused = false) }
         val timerJob = viewModelScope.launch {
+            if (_state.value.timer.countDown.seconds > 0) {
+                _state.update { it.copy(isStarted = true) }
+                initCountdown()
+            }
             when (_state.value.timer.type) {
                 FOR_TIME -> increaseTime()
                 EMOM, AMRAP -> decreaseTime()
             }
         }
-        _state.update { it.copy(isStarted = true, timerJob = timerJob) }
+        _state.update { it.copy(timerJob = timerJob) }
     }
 
     private suspend fun increaseTime() {
@@ -64,14 +66,28 @@ class TimerScreenViewModel @Inject constructor(
         }
     }
 
+    private suspend fun initCountdown() {
+        while (_state.value.actualTime > 0) {
+            delay(1000)
+            _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+        }
+        _state.update { it.copy(actualTime = _state.value.timer.initial) }
+    }
+
     fun pauseTimer() {
         _state.value.timerJob?.cancel()
-        _state.update { it.copy(isStarted = false) }
+        _state.update { it.copy(isPaused = true) }
     }
 
     fun resetTimer() {
         _state.value.timerJob?.cancel()
-        _state.update { it.copy(actualTime = _state.value.timer.initial) }
+        _state.update {
+            it.copy(
+                actualTime = _state.value.timer.countDown.seconds,
+                isPaused = true,
+                isStarted = false
+            )
+        }
     }
 }
 
@@ -79,5 +95,6 @@ data class UiState(
     val timer: Timer = Timer(),
     val actualTime: Int = 0,
     val isStarted: Boolean = false,
-    val timerJob: Job? = null
+    val isPaused: Boolean = true,
+    val timerJob: Job? = null,
 )
