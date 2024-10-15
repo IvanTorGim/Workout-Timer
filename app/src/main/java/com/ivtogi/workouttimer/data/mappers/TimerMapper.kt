@@ -10,12 +10,14 @@ fun TimerEntity.toDomain(exercises: List<Exercise>) = Timer(
     end = end,
     rounds = rounds,
     workout = exercises,
-    type = type
+    type = type,
+    countdown = countdown
 )
 
 fun Timer.toEntity() = TimerEntity(
     initial = initial,
     end = end,
     rounds = rounds,
-    type = type
+    type = type,
+    countdown = countdown
 )

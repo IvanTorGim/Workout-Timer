@@ -43,12 +43,20 @@ class AmrapViewModel @Inject constructor(
         _state.update { it.copy(workout = list) }
     }
 
+    fun onCountdownSelected(value: Int) = _state.update { it.copy(countdown = value) }
+
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
 
     fun saveTimer(navigateToTimer: (Int) -> Unit) {
         val initialTime = _state.value.minutes.toIntMinutes() + _state.value.seconds.toIntSeconds()
-        val timer = Timer(initial = initialTime, workout = _state.value.workout, type = Timer.Type.AMRAP)
+        val timer =
+            Timer(
+                initial = initialTime,
+                workout = _state.value.workout,
+                type = Timer.Type.AMRAP,
+                countdown = _state.value.countdown
+            )
         viewModelScope.launch {
             val timerId = localStorageRepository.saveTimerWithExercises(timer).toInt()
             navigateToTimer(timerId)
@@ -59,6 +67,7 @@ class AmrapViewModel @Inject constructor(
 data class UiState(
     val minutes: String = "",
     val seconds: String = "",
+    val countdown: Int = Timer.CountDown.TEN.seconds,
     val workout: List<Exercise> = emptyList(),
     val showDialog: Boolean = false
 )

@@ -7,7 +7,7 @@ data class Timer(
     val rounds: Int = 0,
     val workout: List<Exercise> = emptyList(),
     val type: Type = Type.FOR_TIME,
-    val countDown: CountDown = CountDown.TEN
+    val countdown: Int = CountDown.TEN.seconds
 ) {
     enum class Type {
         FOR_TIME, EMOM, AMRAP

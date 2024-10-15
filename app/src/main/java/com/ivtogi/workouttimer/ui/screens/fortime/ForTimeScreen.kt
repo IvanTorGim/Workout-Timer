@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.domain.model.Exercise
 import com.ivtogi.workouttimer.ui.screens.common.AddExerciseDialog
+import com.ivtogi.workouttimer.ui.screens.common.CountdownSelector
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
 import com.ivtogi.workouttimer.ui.screens.common.TimerFormularySection
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
@@ -49,9 +50,14 @@ fun ForTimeScreen(
         ) {
             Text(
                 text = stringResource(id = R.string.for_time_description),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            CountdownSelector(
+                seconds = state.countdown,
+                onSelected = { viewModel.onCountdownSelected(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
             TimerFormularySection(

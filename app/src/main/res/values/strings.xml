@@ -19,4 +19,5 @@
     <string name="amrap_description">As many rounds as possible</string>
     <string name="rounds">Rounds</string>
     <string name="for_time_description">As fast as possible</string>
+    <string name="countdown_selector">Countdown</string>
 </resources>

@@ -11,5 +11,6 @@ data class TimerEntity(
     val end: Int = 0,
     val rounds: Int = 0,
     val finished: Boolean = false,
-    val type: Timer.Type = Timer.Type.FOR_TIME
+    val type: Timer.Type = Timer.Type.FOR_TIME,
+    val countdown: Int = Timer.CountDown.TEN.seconds
 )

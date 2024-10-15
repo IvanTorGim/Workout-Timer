@@ -32,7 +32,7 @@ class TimerScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val timerRoute = savedStateHandle.toRoute<TimerRoute>()
             val timer = localStorageRepository.getTimerWithExercisesById(timerRoute.id)
-            _state.update { it.copy(timer = timer, actualTime = _state.value.timer.countDown.seconds) }
+            _state.update { it.copy(timer = timer, actualTime = timer.countdown) }
         }
     }
 
@@ -40,7 +40,7 @@ class TimerScreenViewModel @Inject constructor(
         _state.value.timerJob?.cancel()
         _state.update { it.copy(isPaused = false) }
         val timerJob = viewModelScope.launch {
-            if (_state.value.timer.countDown.seconds > 0) {
+            if (_state.value.timer.countdown > 0) {
                 _state.update { it.copy(isStarted = true) }
                 initCountdown()
             }
@@ -83,7 +83,7 @@ class TimerScreenViewModel @Inject constructor(
         _state.value.timerJob?.cancel()
         _state.update {
             it.copy(
-                actualTime = _state.value.timer.countDown.seconds,
+                actualTime = _state.value.timer.countdown,
                 isPaused = true,
                 isStarted = false
             )

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ForTimeViewModel @Inject constructor(
@@ -43,12 +44,19 @@ class ForTimeViewModel @Inject constructor(
         _state.update { it.copy(workout = list) }
     }
 
+    fun onCountdownSelected(value: Int) = _state.update { it.copy(countdown = value) }
+
     fun showDialog() = _state.update { it.copy(showDialog = true) }
     fun hideDialog() = _state.update { it.copy(showDialog = false) }
 
     fun saveTimer(navigateToTimer: (Int) -> Unit) {
         val endTime = _state.value.minutes.toIntMinutes() + _state.value.seconds.toIntSeconds()
-        val timer = Timer(end = endTime, workout = _state.value.workout, type = Timer.Type.FOR_TIME)
+        val timer = Timer(
+            end = endTime,
+            workout = _state.value.workout,
+            type = Timer.Type.FOR_TIME,
+            countdown = _state.value.countdown
+        )
         viewModelScope.launch {
             val timerId = localStorageRepository.saveTimerWithExercises(timer).toInt()
             navigateToTimer(timerId)
@@ -59,6 +67,7 @@ class ForTimeViewModel @Inject constructor(
 data class UiState(
     val minutes: String = "",
     val seconds: String = "",
+    val countdown: Int = Timer.CountDown.TEN.seconds,
     val workout: List<Exercise> = listOf(),
     val showDialog: Boolean = false
 )
