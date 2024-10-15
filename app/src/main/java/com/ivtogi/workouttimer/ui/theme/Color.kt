@@ -8,3 +8,5 @@ val Yellow55 = Color(0xFFf0c828)
 val Yellow80 = Color(0xFFf8e7a0)
 val Blue55 = Color(0xFF2bbaa5)
 val Blue80 = Color(0xFFacece2)
+
+val White = Color(0xFFFFFFFF)
