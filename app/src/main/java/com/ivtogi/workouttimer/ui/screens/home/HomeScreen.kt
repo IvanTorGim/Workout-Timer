@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,12 +39,10 @@ fun HomeScreen(
                 textRes = R.string.for_time,
                 onClick = onForTimeClick
             )
-            Spacer(modifier = Modifier.height(16.dp))
             LargeButton(
                 textRes = R.string.emom,
                 onClick = onEmomClick
             )
-            Spacer(modifier = Modifier.height(16.dp))
             LargeButton(
                 textRes = R.string.amrap,
                 onClick = onAmrapClick
