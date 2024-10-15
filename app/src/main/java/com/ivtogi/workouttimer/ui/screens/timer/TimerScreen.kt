@@ -1,5 +1,6 @@
 package com.ivtogi.workouttimer.ui.screens.timer
 
+import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import com.ivtogi.workouttimer.core.toStringMinutes
 import com.ivtogi.workouttimer.core.toStringSeconds
 import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.ui.screens.timer.composable.MarqueeText
 import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerIconButton
 
 @Composable
@@ -100,11 +102,7 @@ fun TimerScreen(
                             )
                         }
                     }
-                    Text(
-                        text = state.timer.workout.joinToString("  ") { it.toFormatString() },
-                        style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.basicMarquee(velocity = if (state.isStarted) 100.dp else 0.dp)
-                    )
+                    MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
                 }
             } else {
                 Column(
@@ -123,11 +121,7 @@ fun TimerScreen(
                         )
 
                     }
-                    Text(
-                        text = state.timer.workout.joinToString("  ") { it.toFormatString() },
-                        style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.basicMarquee(velocity = if (state.isStarted) 100.dp else 0.dp)
-                    )
+                    MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
                     if (state.isPaused) {
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             TimerIconButton(

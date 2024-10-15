@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 fun LargeButton(@StringRes textRes: Int, onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(32.dp, 8.dp)
     ) {
         Text(
             stringResource(id = textRes),
