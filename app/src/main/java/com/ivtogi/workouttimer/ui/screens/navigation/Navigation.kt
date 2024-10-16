@@ -29,7 +29,10 @@ fun Navigation(navHostController: NavHostController = rememberNavController()) {
         }
 
         composable<EmomRoute> {
-            EmomScreen { navHostController.popBackStack() }
+            EmomScreen(
+                onBackClick = { navHostController.popBackStack() },
+                navigateToTimer = { navHostController.navigate(TimerRoute(it)) }
+            )
         }
 
         composable<AmrapRoute> {
