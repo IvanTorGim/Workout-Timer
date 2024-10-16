@@ -7,7 +7,6 @@ import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_SEC
 import com.ivtogi.workouttimer.core.formatNumberField
 import com.ivtogi.workouttimer.core.toIntMinutes
 import com.ivtogi.workouttimer.core.toIntSeconds
-import com.ivtogi.workouttimer.domain.model.Exercise
 import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,48 +25,37 @@ class AmrapViewModel @Inject constructor(
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     fun onMinutesChanged(value: String) = _state.update {
-        it.copy(minutes = value.formatNumberField(LIMIT_FOR_TIME_AMRAP_MINUTES))
+        it.copy(minutes = value.formatNumberField(0, LIMIT_FOR_TIME_AMRAP_MINUTES))
     }
 
     fun onSecondsChanged(value: String) = _state.update {
-        it.copy(seconds = value.formatNumberField(LIMIT_FOR_TIME_AMRAP_SECONDS))
+        it.copy(seconds = value.formatNumberField(0, LIMIT_FOR_TIME_AMRAP_SECONDS))
     }
 
-    fun addExercise(exercise: Exercise) = _state.update {
-        it.copy(workout = it.workout + exercise, showDialog = false)
-    }
-
-    fun deleteExercise(index: Int) {
-        val list = _state.value.workout.toMutableList()
-        list.removeAt(index)
-        _state.update { it.copy(workout = list) }
-    }
+    fun onWorkoutChanged(value: String) = _state.update { it.copy(workout = value) }
 
     fun onCountdownSelected(value: Int) = _state.update { it.copy(countdown = value) }
 
-    fun showDialog() = _state.update { it.copy(showDialog = true) }
-    fun hideDialog() = _state.update { it.copy(showDialog = false) }
-
     fun saveTimer(navigateToTimer: (Int) -> Unit) {
         val initialTime = _state.value.minutes.toIntMinutes() + _state.value.seconds.toIntSeconds()
-        val timer =
-            Timer(
-                initial = initialTime,
-                workout = _state.value.workout,
-                type = Timer.Type.AMRAP,
-                countdown = _state.value.countdown
-            )
+        val timer = Timer(
+            initial = initialTime,
+            workout = _state.value.workout.replace(Regex("\\s+"), " "),
+            type = Timer.Type.AMRAP,
+            countdown = _state.value.countdown
+        )
         viewModelScope.launch {
-            val timerId = localStorageRepository.saveTimerWithExercises(timer).toInt()
+            val timerId = localStorageRepository.saveTimer(timer).toInt()
             navigateToTimer(timerId)
         }
     }
 }
 
 data class UiState(
+    val countdown: Int = Timer.CountDown.TEN.seconds,
     val minutes: String = "",
     val seconds: String = "",
-    val countdown: Int = Timer.CountDown.TEN.seconds,
-    val workout: List<Exercise> = emptyList(),
+    val rounds: Int = 1,
+    val workout: String = "",
     val showDialog: Boolean = false
 )

@@ -18,8 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.domain.model.Exercise
-import com.ivtogi.workouttimer.ui.screens.common.AddExerciseDialog
 import com.ivtogi.workouttimer.ui.screens.common.CountdownSelector
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
 import com.ivtogi.workouttimer.ui.screens.common.TimerFormularySection
@@ -70,30 +68,14 @@ fun ForTimeScreen(
             Spacer(modifier = Modifier.height(16.dp))
             WorkoutSection(
                 workout = state.workout,
-                onAddExerciseClicked = { viewModel.showDialog() },
-                onDeleteExercise = { viewModel.deleteExercise(it) },
+                onWorkoutChanged = { viewModel.onWorkoutChanged(it) },
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.height(16.dp))
             LargeButton(
                 textRes = R.string.start,
-                onClick = {
-                    viewModel.saveTimer(navigateToTimer)
-                }
+                onClick = { viewModel.saveTimer(navigateToTimer) }
             )
-            if (state.showDialog) {
-                AddExerciseDialog(
-                    addExercise = { quantity, exercise ->
-                        viewModel.addExercise(
-                            Exercise(
-                                quantity = quantity,
-                                name = exercise
-                            )
-                        )
-                    },
-                    hideDialog = { viewModel.hideDialog() }
-                )
-            }
         }
     }
 }

@@ -31,7 +31,7 @@ class TimerScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val timerRoute = savedStateHandle.toRoute<TimerRoute>()
-            val timer = localStorageRepository.getTimerWithExercisesById(timerRoute.id)
+            val timer = localStorageRepository.getTimerById(timerRoute.id)
             _state.update { it.copy(timer = timer, actualTime = timer.countdown) }
         }
     }

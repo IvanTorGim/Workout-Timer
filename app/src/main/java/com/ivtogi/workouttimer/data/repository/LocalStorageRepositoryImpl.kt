@@ -10,21 +10,12 @@ import javax.inject.Inject
 class LocalStorageRepositoryImpl @Inject constructor(
     private val timerDao: TimerDao
 ) : LocalStorageRepository {
-    override suspend fun saveTimerWithExercises(timer: Timer): Long {
-        val timerEntity = timer.toEntity()
-        val exercisesEntities = timer.workout.map { it.toEntity() }
-        return try {
-            timerDao.insertTimerWithExercises(timerEntity, exercisesEntities)
-        } catch (e: Exception) {
-            0
-        }
+
+    override suspend fun saveTimer(timer: Timer): Long = try {
+        timerDao.insertTimer(timer.toEntity())
+    } catch (e: Exception) {
+        0
     }
 
-    override suspend fun getTimerWithExercisesById(id: Int): Timer {
-        val result = timerDao.getTimerWithExercisesById(id)
-        val exercises = result.exercises.map { it.toDomain() }
-        val timer = result.timer.toDomain(exercises)
-        return timer
-    }
-
+    override suspend fun getTimerById(id: Int): Timer = timerDao.getTimerById(id).toDomain()
 }

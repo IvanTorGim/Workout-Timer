@@ -32,7 +32,7 @@ fun RoundsSection(
             keyboardType = KeyboardType.NumberPassword,
             imeAction = ImeAction.Done
         ),
-        placeholder = { Text(text = "0") },
+        placeholder = { Text(text = "1") },
         modifier = Modifier.fillMaxWidth()
     )
 }

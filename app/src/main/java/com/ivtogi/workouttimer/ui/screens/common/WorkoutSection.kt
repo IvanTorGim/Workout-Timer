@@ -1,68 +1,51 @@
 package com.ivtogi.workouttimer.ui.screens.common
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.domain.model.Exercise
 
 @Composable
 fun WorkoutSection(
-    workout: List<Exercise>,
-    onAddExerciseClicked: () -> Unit,
-    onDeleteExercise: (Int) -> Unit,
+    workout: String,
+    onWorkoutChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Row(
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = stringResource(id = R.string.workout),
                 style = MaterialTheme.typography.titleLarge
             )
-            TextButton(onClick = onAddExerciseClicked) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.add_exercise)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(id = R.string.add_exercise))
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            itemsIndexed(items = workout) { index, exercise ->
-                ExerciseItem(
-                    exercise = exercise,
-                    index = index,
-                    onDelete = { onDeleteExercise(index) }
-                )
-            }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = workout,
+                onValueChange = onWorkoutChanged,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.NumberPassword,
+                    imeAction = ImeAction.Done
+                ),
+                placeholder = { Text(text = "description") },
+                minLines = 5,
+                maxLines = 5,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
