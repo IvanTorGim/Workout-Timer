@@ -2,8 +2,8 @@ package com.ivtogi.workouttimer.ui.screens.amrap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_TEXT_FIELD_MINUTES
-import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_TEXT_FIELD_SECONDS
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_MINUTES
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_SECONDS
 import com.ivtogi.workouttimer.core.formatNumberField
 import com.ivtogi.workouttimer.core.toIntMinutes
 import com.ivtogi.workouttimer.core.toIntSeconds
@@ -26,11 +26,11 @@ class AmrapViewModel @Inject constructor(
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     fun onMinutesChanged(value: String) = _state.update {
-        it.copy(minutes = value.formatNumberField(LIMIT_TEXT_FIELD_MINUTES))
+        it.copy(minutes = value.formatNumberField(LIMIT_FOR_TIME_AMRAP_MINUTES))
     }
 
     fun onSecondsChanged(value: String) = _state.update {
-        it.copy(seconds = value.formatNumberField(LIMIT_TEXT_FIELD_SECONDS))
+        it.copy(seconds = value.formatNumberField(LIMIT_FOR_TIME_AMRAP_SECONDS))
     }
 
     fun addExercise(exercise: Exercise) = _state.update {

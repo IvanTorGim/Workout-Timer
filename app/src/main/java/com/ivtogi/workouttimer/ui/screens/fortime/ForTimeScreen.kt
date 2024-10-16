@@ -61,6 +61,7 @@ fun ForTimeScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TimerFormularySection(
+                title = R.string.timer,
                 minutes = state.minutes,
                 seconds = state.seconds,
                 onMinutesChange = { viewModel.onMinutesChanged(it) },

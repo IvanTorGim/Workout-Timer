@@ -1,5 +1,6 @@
 package com.ivtogi.workouttimer.ui.screens.common
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,17 +16,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.ivtogi.workouttimer.R
 
 @Composable
 fun TimerFormularySection(
+    @StringRes title: Int,
     minutes: String,
     seconds: String,
     onMinutesChange: (String) -> Unit,
     onSecondsChange: (String) -> Unit
 ) {
     Text(
-        text = stringResource(id = R.string.timer),
+        text = stringResource(id = title),
         style = MaterialTheme.typography.titleLarge
     )
     Spacer(modifier = Modifier.height(8.dp))

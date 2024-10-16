@@ -20,4 +20,5 @@
     <string name="rounds">Rounds</string>
     <string name="for_time_description">As fast as possible</string>
     <string name="countdown_selector">Countdown</string>
+    <string name="every">Every</string>
 </resources>

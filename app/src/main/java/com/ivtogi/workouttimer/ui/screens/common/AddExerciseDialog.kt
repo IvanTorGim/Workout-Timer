@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_TEXT_FIELD_DEFAULT
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_QUANTITY_REPS_EXERCISE
 import com.ivtogi.workouttimer.core.formatNumberField
 
 @Composable
@@ -41,7 +41,9 @@ fun AddExerciseDialog(addExercise: (String, String) -> Unit, hideDialog: () -> U
                 Text(text = stringResource(id = R.string.add_exercise))
                 OutlinedTextField(
                     value = quantity,
-                    onValueChange = { quantity = it.formatNumberField(LIMIT_TEXT_FIELD_DEFAULT) },
+                    onValueChange = {
+                        quantity = it.formatNumberField(LIMIT_QUANTITY_REPS_EXERCISE)
+                    },
                     label = { Text(text = stringResource(id = R.string.quantity)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.NumberPassword,
