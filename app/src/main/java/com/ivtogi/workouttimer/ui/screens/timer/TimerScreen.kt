@@ -1,7 +1,5 @@
 package com.ivtogi.workouttimer.ui.screens.timer
 
-import androidx.compose.foundation.MarqueeSpacing
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,7 +50,8 @@ fun TimerScreen(
             }
             TopBar(
                 title = string,
-                secondaryText = "${timer.toStringMinutes()}:${timer.toStringSeconds()}",
+                timer = "${timer.toStringMinutes()}:${timer.toStringSeconds()}",
+                rounds = "${state.actualRound}/${state.timer.rounds}",
                 onBackClick = onBackClick
             )
         }

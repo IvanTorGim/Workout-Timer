@@ -21,7 +21,8 @@ import com.ivtogi.workouttimer.R
 @Composable
 fun TopBar(
     @StringRes title: Int,
-    secondaryText: String = "",
+    timer: String = "",
+    rounds: String = "",
     onBackClick: () -> Unit
 ) {
     TopAppBar(
@@ -29,7 +30,9 @@ fun TopBar(
             Row {
                 Text(text = stringResource(id = title))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = secondaryText)
+                Text(text = timer)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = rounds)
             }
         },
         navigationIcon = {

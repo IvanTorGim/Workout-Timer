@@ -46,32 +46,38 @@ class TimerScreenViewModel @Inject constructor(
             }
             when (_state.value.timer.type) {
                 FOR_TIME -> increaseTime()
-                EMOM, AMRAP -> decreaseTime()
+                EMOM -> decreaseTime()
+                AMRAP -> decreaseTime()
             }
         }
         _state.update { it.copy(timerJob = timerJob) }
     }
 
     private suspend fun increaseTime() {
-        while (_state.value.actualTime < _state.value.timer.end) {
-            delay(1000)
-            _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
+        for (round in 1.._state.value.timer.rounds) {
+            _state.update { it.copy(actualRound = round, actualTime = _state.value.timer.initial) }
+            while (_state.value.actualTime < _state.value.timer.end) {
+                _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
+                delay(1000)
+            }
         }
     }
 
     private suspend fun decreaseTime() {
-        while (_state.value.actualTime > _state.value.timer.end) {
-            delay(1000)
-            _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+        for (round in 1.._state.value.timer.rounds) {
+            _state.update { it.copy(actualRound = round, actualTime = _state.value.timer.initial) }
+            while (_state.value.actualTime > _state.value.timer.end) {
+                _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+                delay(1000)
+            }
         }
     }
 
     private suspend fun initCountdown() {
         while (_state.value.actualTime > 0) {
-            delay(1000)
             _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+            delay(1000)
         }
-        _state.update { it.copy(actualTime = _state.value.timer.initial) }
     }
 
     fun pauseTimer() {
@@ -94,6 +100,7 @@ class TimerScreenViewModel @Inject constructor(
 data class UiState(
     val timer: Timer = Timer(),
     val actualTime: Int = 0,
+    val actualRound: Int = 0,
     val isStarted: Boolean = false,
     val isPaused: Boolean = true,
     val timerJob: Job? = null,
