@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -48,6 +50,7 @@ fun EmomScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
                 .padding(32.dp, 8.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Text(
                 text = stringResource(id = R.string.emom_description),
@@ -76,10 +79,9 @@ fun EmomScreen(
             Spacer(modifier = Modifier.height(16.dp))
             WorkoutSection(
                 workout = state.workout,
-                onWorkoutChanged = { viewModel.onWorkoutChanged(it) },
-                modifier = Modifier.weight(1f)
+                onWorkoutChanged = { viewModel.onWorkoutChanged(it) }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
             LargeButton(
                 textRes = R.string.start,
                 onClick = {
