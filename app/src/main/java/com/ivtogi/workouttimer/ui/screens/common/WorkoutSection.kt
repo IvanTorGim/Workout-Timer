@@ -2,7 +2,6 @@ package com.ivtogi.workouttimer.ui.screens.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,32 +19,27 @@ import com.ivtogi.workouttimer.R
 @Composable
 fun WorkoutSection(
     workout: String,
-    onWorkoutChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onWorkoutChanged: (String) -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(id = R.string.workout),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = workout,
-                onValueChange = onWorkoutChanged,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword,
-                    imeAction = ImeAction.Done
-                ),
-                placeholder = { Text(text = "description") },
-                minLines = 5,
-                maxLines = 5,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        Text(
+            text = stringResource(id = R.string.workout),
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = workout,
+            onValueChange = onWorkoutChanged,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            placeholder = { Text(text = "description") },
+            minLines = 5,
+            maxLines = 5,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
