@@ -1,19 +1,16 @@
 package com.ivtogi.workouttimer.ui.screens.timer
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +28,6 @@ import com.ivtogi.workouttimer.domain.model.Timer.Type.AMRAP
 import com.ivtogi.workouttimer.domain.model.Timer.Type.EMOM
 import com.ivtogi.workouttimer.domain.model.Timer.Type.FOR_TIME
 import com.ivtogi.workouttimer.ui.screens.timer.composable.MarqueeText
-import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerIconButton
 import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerTopBar
 
 @Composable
@@ -56,7 +52,12 @@ fun TimerScreen(
                 title = string,
                 timer = "${timer.toStringMinutes()}:${timer.toStringSeconds()}",
                 rounds = "${state.actualRound}/${state.timer.rounds}",
-                onBackClick = onBackClick
+                isPaused = state.isPaused,
+                isStarted = state.isStarted,
+                onBackClick = onBackClick,
+                onPlayClick = { viewModel.startTimer() },
+                onPauseClick = { viewModel.pauseTimer() },
+                onResetClick = { viewModel.resetTimer() }
             )
         }
     ) { paddingValues ->
@@ -68,6 +69,10 @@ fun TimerScreen(
                 FOR_TIME -> state.actualTime.toFloat() / state.timer.end.toFloat()
                 EMOM, AMRAP -> (state.timer.initial.toFloat() - state.actualTime.toFloat()) / state.timer.initial.toFloat()
             }
+            val animatedProgress by animateFloatAsState(
+                targetValue = if (state.isCountdown) 0f else progress,
+                animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+            )
             if (localConfiguration.screenWidthDp > 600) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -75,7 +80,7 @@ fun TimerScreen(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     LinearProgressIndicator(
-                        progress = { if (state.isCountdown) 0f else progress },
+                        progress = { animatedProgress },
                         modifier = Modifier
                             .fillMaxWidth(.9f)
                             .height(24.dp)
@@ -90,29 +95,6 @@ fun TimerScreen(
                             style = MaterialTheme.typography.displayLarge,
                             modifier = Modifier.align(Alignment.Center)
                         )
-                        if (state.isPaused) {
-                            TimerIconButton(
-                                icon = Icons.Default.PlayArrow,
-                                contentDescription = R.string.play_timer,
-                                onClick = { viewModel.startTimer() },
-                                modifier = Modifier.align(Alignment.CenterEnd)
-                            )
-                            if (state.isStarted) {
-                                TimerIconButton(
-                                    icon = Icons.Default.Replay,
-                                    contentDescription = R.string.reset_timer,
-                                    onClick = { viewModel.resetTimer() },
-                                    modifier = Modifier.align(Alignment.CenterStart)
-                                )
-                            }
-                        } else {
-                            TimerIconButton(
-                                icon = Icons.Default.Pause,
-                                contentDescription = R.string.pause_timer,
-                                onClick = { viewModel.pauseTimer() },
-                                modifier = Modifier.align(Alignment.CenterEnd)
-                            )
-                        }
                     }
                     MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
                 }
@@ -123,7 +105,7 @@ fun TimerScreen(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     LinearProgressIndicator(
-                        progress = { if (state.isCountdown) 0f else progress },
+                        progress = { animatedProgress },
                         modifier = Modifier
                             .fillMaxWidth(.9f)
                             .height(24.dp)
@@ -137,31 +119,8 @@ fun TimerScreen(
                             text = state.actualTime.toStringSeconds(),
                             style = MaterialTheme.typography.displayLarge
                         )
-
                     }
                     MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
-                    if (state.isPaused) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            TimerIconButton(
-                                icon = Icons.Default.PlayArrow,
-                                contentDescription = R.string.play_timer,
-                                onClick = { viewModel.startTimer() },
-                            )
-                            if (state.isStarted) {
-                                TimerIconButton(
-                                    icon = Icons.Default.Replay,
-                                    contentDescription = R.string.reset_timer,
-                                    onClick = { viewModel.resetTimer() },
-                                )
-                            }
-                        }
-                    } else {
-                        TimerIconButton(
-                            icon = Icons.Default.Pause,
-                            contentDescription = R.string.pause_timer,
-                            onClick = { viewModel.pauseTimer() },
-                        )
-                    }
                 }
             }
         }
