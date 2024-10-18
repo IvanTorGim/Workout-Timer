@@ -4,7 +4,7 @@ class Constants {
 
     companion object {
         const val ONE_MIN_IN_SEC = 60
-        const val ONE_SEC_IN_MILLIS = 1000
+        const val ONE_SEC_IN_MILLIS = 1000L
 
         const val LIMIT_FOR_TIME_AMRAP_MINUTES = 99
         const val LIMIT_FOR_TIME_AMRAP_SECONDS = 59

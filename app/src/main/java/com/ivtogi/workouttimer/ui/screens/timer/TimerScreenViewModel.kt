@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.ivtogi.workouttimer.core.Constants.Companion.ONE_SEC_IN_MILLIS
 import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.domain.model.Timer.Type.AMRAP
 import com.ivtogi.workouttimer.domain.model.Timer.Type.EMOM
@@ -53,41 +54,53 @@ class TimerScreenViewModel @Inject constructor(
     }
 
     private suspend fun increaseTime() {
-        while (_state.value.actualRound <= _state.value.timer.rounds) {
+        while (_state.value.actualRound < _state.value.timer.rounds) {
             while (_state.value.actualTime < _state.value.timer.end) {
-                delay(1000)
+                delay(ONE_SEC_IN_MILLIS)
                 _state.update { it.copy(actualTime = _state.value.actualTime + 1) }
             }
             _state.update { it.copy(actualRound = _state.value.actualRound + 1) }
             if (_state.value.actualRound < _state.value.timer.rounds) {
-                _state.update { it.copy(actualTime = _state.value.timer.initial) }
+                delay(ONE_SEC_IN_MILLIS)
+                _state.update {
+                    it.copy(actualTime = _state.value.timer.initial + 1)
+                }
             }
         }
+        _state.update { it.copy(isFinished = true) }
     }
 
     private suspend fun decreaseTime() {
-        while (_state.value.actualRound <= _state.value.timer.rounds) {
+        while (_state.value.actualRound < _state.value.timer.rounds) {
             while (_state.value.actualTime > _state.value.timer.end) {
-                delay(1000)
+                delay(ONE_SEC_IN_MILLIS)
                 _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
             }
             _state.update { it.copy(actualRound = _state.value.actualRound + 1) }
             if (_state.value.actualRound < _state.value.timer.rounds) {
-                _state.update { it.copy(actualTime = _state.value.timer.initial) }
+                delay(ONE_SEC_IN_MILLIS)
+                _state.update {
+                    it.copy(actualTime = _state.value.timer.initial - 1)
+                }
             }
         }
+        _state.update { it.copy(isFinished = true) }
     }
 
     private suspend fun initCountdown() {
-        while (_state.value.actualTime > 1) {
-            _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
-            delay(1000)
+        val initialTime = when (_state.value.timer.type) {
+            FOR_TIME -> _state.value.timer.initial + 1
+            EMOM, AMRAP -> _state.value.timer.initial - 1
         }
+        while (_state.value.actualTime > 0) {
+            delay(ONE_SEC_IN_MILLIS)
+            _state.update { it.copy(actualTime = _state.value.actualTime - 1) }
+        }
+        delay(ONE_SEC_IN_MILLIS)
         _state.update {
             it.copy(
                 isCountdown = false,
-                actualRound = 1,
-                actualTime = _state.value.timer.initial
+                actualTime = initialTime
             )
         }
     }
@@ -103,9 +116,10 @@ class TimerScreenViewModel @Inject constructor(
             it.copy(
                 actualTime = _state.value.timer.countdown,
                 actualRound = 0,
-                isPaused = true,
                 isStarted = false,
-                isCountdown = true
+                isPaused = true,
+                isCountdown = true,
+                isFinished = false
             )
         }
     }
@@ -118,5 +132,6 @@ data class UiState(
     val isStarted: Boolean = false,
     val isPaused: Boolean = true,
     val isCountdown: Boolean = true,
+    val isFinished: Boolean = false,
     val timerJob: Job? = null,
 )
