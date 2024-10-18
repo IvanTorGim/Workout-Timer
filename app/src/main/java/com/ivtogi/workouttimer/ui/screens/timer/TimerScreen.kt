@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,10 +27,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.core.toStringMinutes
 import com.ivtogi.workouttimer.core.toStringSeconds
-import com.ivtogi.workouttimer.domain.model.Timer
-import com.ivtogi.workouttimer.ui.screens.common.TopBar
+import com.ivtogi.workouttimer.domain.model.Timer.Type.AMRAP
+import com.ivtogi.workouttimer.domain.model.Timer.Type.EMOM
+import com.ivtogi.workouttimer.domain.model.Timer.Type.FOR_TIME
 import com.ivtogi.workouttimer.ui.screens.timer.composable.MarqueeText
 import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerIconButton
+import com.ivtogi.workouttimer.ui.screens.timer.composable.TimerTopBar
 
 @Composable
 fun TimerScreen(
@@ -40,15 +44,15 @@ fun TimerScreen(
     Scaffold(
         topBar = {
             val string = when (state.timer.type) {
-                Timer.Type.FOR_TIME -> R.string.for_time
-                Timer.Type.EMOM -> R.string.emom
-                Timer.Type.AMRAP -> R.string.amrap
+                FOR_TIME -> R.string.for_time
+                EMOM -> R.string.emom
+                AMRAP -> R.string.amrap
             }
             val timer = when (state.timer.type) {
-                Timer.Type.FOR_TIME -> state.timer.end
+                FOR_TIME -> state.timer.end
                 else -> state.timer.initial
             }
-            TopBar(
+            TimerTopBar(
                 title = string,
                 timer = "${timer.toStringMinutes()}:${timer.toStringSeconds()}",
                 rounds = "${state.actualRound}/${state.timer.rounds}",
@@ -60,18 +64,27 @@ fun TimerScreen(
             modifier = Modifier
                 .padding(paddingValues)
         ) {
+            val progress = when (state.timer.type) {
+                FOR_TIME -> state.actualTime.toFloat() / state.timer.end.toFloat()
+                EMOM, AMRAP -> (state.timer.initial.toFloat() - state.actualTime.toFloat()) / state.timer.initial.toFloat()
+            }
             if (localConfiguration.screenWidthDp > 600) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    LinearProgressIndicator(
+                        progress = { if (state.isCountdown) 0f else progress },
+                        modifier = Modifier
+                            .fillMaxWidth(.9f)
+                            .height(24.dp)
+                    )
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp, 0.dp)
                     ) {
-
                         Text(
                             text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
                             style = MaterialTheme.typography.displayLarge,
@@ -107,8 +120,14 @@ fun TimerScreen(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    LinearProgressIndicator(
+                        progress = { if (state.isCountdown) 0f else progress },
+                        modifier = Modifier
+                            .fillMaxWidth(.9f)
+                            .height(24.dp)
+                    )
                     Column {
                         Text(
                             text = state.actualTime.toStringMinutes(),
