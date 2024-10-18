@@ -1,5 +1,6 @@
 package com.ivtogi.workouttimer.ui.screens.home
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,14 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ivtogi.workouttimer.MainActivity
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
-import com.ivtogi.workouttimer.ui.theme.WorkoutTimerTheme
 
 @Composable
 fun HomeScreen(
@@ -23,6 +25,11 @@ fun HomeScreen(
     onEmomClick: () -> Unit,
     onAmrapClick: () -> Unit
 ) {
+    val activity = LocalContext.current as? MainActivity
+    LaunchedEffect(Unit) {
+        activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,13 +56,5 @@ fun HomeScreen(
             )
         }
         Spacer(modifier = Modifier.padding(1.dp))
-    }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-fun HomeScreenPreview() {
-    WorkoutTimerTheme {
-        HomeScreen(onForTimeClick = {}, onAmrapClick = {}, onEmomClick = {})
     }
 }

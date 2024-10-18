@@ -1,5 +1,6 @@
 package com.ivtogi.workouttimer.ui.screens.timer
 
+import android.content.pm.ActivityInfo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,13 +15,16 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ivtogi.workouttimer.MainActivity
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.core.toStringMinutes
 import com.ivtogi.workouttimer.core.toStringSeconds
@@ -37,6 +41,12 @@ fun TimerScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val localConfiguration = LocalConfiguration.current
+    val activity = LocalContext.current as? MainActivity
+
+    LaunchedEffect(Unit) {
+        activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+    }
+
     Scaffold(
         topBar = {
             val string = when (state.timer.type) {

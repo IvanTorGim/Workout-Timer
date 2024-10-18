@@ -1,5 +1,6 @@
 package com.ivtogi.workouttimer.ui.screens.amrap
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +13,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ivtogi.workouttimer.MainActivity
 import com.ivtogi.workouttimer.R
 import com.ivtogi.workouttimer.ui.screens.common.CountdownSelector
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
@@ -33,6 +37,12 @@ fun AmrapScreen(
     navigateToTimer: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val activity = LocalContext.current as? MainActivity
+
+    LaunchedEffect(Unit) {
+        activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    }
+
 
     Scaffold(
         topBar = {

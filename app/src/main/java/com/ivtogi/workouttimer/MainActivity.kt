@@ -24,5 +24,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    fun setOrientation(orientation: Int) {
+        requestedOrientation = orientation
+    }
 }
 
