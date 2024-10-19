@@ -17,16 +17,16 @@ val Typography = Typography(
     ),
     displayLarge = TextStyle(
         fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Normal,
-        fontSize = 180.sp,
-        lineHeight = 180.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 160.sp,
+        lineHeight = 160.sp,
         letterSpacing = 0.sp
     ),
     displayMedium = TextStyle(
         fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Normal,
-        fontSize = 80.sp,
-        lineHeight = 80.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 60.sp,
+        lineHeight = 60.sp,
         letterSpacing = 0.sp
     )
     /*

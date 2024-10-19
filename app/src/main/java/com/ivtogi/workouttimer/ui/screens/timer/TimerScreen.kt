@@ -15,7 +15,7 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,8 +43,14 @@ fun TimerScreen(
     val localConfiguration = LocalConfiguration.current
     val activity = LocalContext.current as? MainActivity
 
-    LaunchedEffect(Unit) {
-        activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+    DisposableEffect(Unit) {
+        activity?.apply {
+            setOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+        onDispose {
+            activity?.window?.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     Scaffold(
@@ -92,20 +98,13 @@ fun TimerScreen(
                     LinearProgressIndicator(
                         progress = { animatedProgress },
                         modifier = Modifier
-                            .fillMaxWidth(.9f)
+                            .fillMaxWidth()
                             .height(24.dp)
                     )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp, 0.dp)
-                    ) {
-                        Text(
-                            text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
-                            style = MaterialTheme.typography.displayLarge,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                    Text(
+                        text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
+                        style = MaterialTheme.typography.displayLarge
+                    )
                     MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
                 }
             } else {
@@ -117,7 +116,7 @@ fun TimerScreen(
                     LinearProgressIndicator(
                         progress = { animatedProgress },
                         modifier = Modifier
-                            .fillMaxWidth(.9f)
+                            .fillMaxWidth()
                             .height(24.dp)
                     )
                     Column {
