@@ -26,8 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.MainActivity
 import com.ivtogi.workouttimer.R
-import com.ivtogi.workouttimer.core.toStringMinutes
-import com.ivtogi.workouttimer.core.toStringSeconds
+import com.ivtogi.workouttimer.core.toStringTime
 import com.ivtogi.workouttimer.domain.model.Timer.Type.AMRAP
 import com.ivtogi.workouttimer.domain.model.Timer.Type.EMOM
 import com.ivtogi.workouttimer.domain.model.Timer.Type.FOR_TIME
@@ -66,7 +65,7 @@ fun TimerScreen(
             }
             TimerTopBar(
                 title = string,
-                timer = "${timer.toStringMinutes()}:${timer.toStringSeconds()}",
+                timer = timer.toStringTime(),
                 rounds = "${state.actualRound}/${state.timer.rounds}",
                 isPaused = state.isPaused,
                 isStarted = state.isStarted,
@@ -87,7 +86,8 @@ fun TimerScreen(
             }
             val animatedProgress by animateFloatAsState(
                 targetValue = if (state.isCountdown) 0f else progress,
-                animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+                animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
+                label = "Time bar"
             )
             if (localConfiguration.screenWidthDp > 600) {
                 Column(
@@ -102,7 +102,7 @@ fun TimerScreen(
                             .height(24.dp)
                     )
                     Text(
-                        text = "${state.actualTime.toStringMinutes()}:${state.actualTime.toStringSeconds()}",
+                        text = state.actualTime.toStringTime(),
                         style = MaterialTheme.typography.displayLarge
                     )
                     MarqueeText(workout = state.timer.workout, isPaused = state.isPaused)
@@ -120,12 +120,14 @@ fun TimerScreen(
                             .height(24.dp)
                     )
                     Column {
+                        val minutes = state.actualTime.toStringTime().split(":")[0]
+                        val seconds = state.actualTime.toStringTime().split(":")[1]
                         Text(
-                            text = state.actualTime.toStringMinutes(),
+                            text = minutes,
                             style = MaterialTheme.typography.displayLarge
                         )
                         Text(
-                            text = state.actualTime.toStringSeconds(),
+                            text = seconds,
                             style = MaterialTheme.typography.displayLarge
                         )
                     }

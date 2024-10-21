@@ -24,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivtogi.workouttimer.MainActivity
 import com.ivtogi.workouttimer.R
+import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_MINUTES
+import com.ivtogi.workouttimer.core.Constants.Companion.ONE_MIN_IN_SEC
+import com.ivtogi.workouttimer.core.Constants.Companion.STEP_INTERVAL_FOR_TIME_AMRAP
 import com.ivtogi.workouttimer.ui.screens.common.CountdownSelector
 import com.ivtogi.workouttimer.ui.screens.common.LargeButton
-import com.ivtogi.workouttimer.ui.screens.common.TimerFormularySection
+import com.ivtogi.workouttimer.ui.screens.common.TimerSection
 import com.ivtogi.workouttimer.ui.screens.common.TopBar
 import com.ivtogi.workouttimer.ui.screens.common.WorkoutSection
 
@@ -42,7 +45,6 @@ fun AmrapScreen(
     LaunchedEffect(Unit) {
         activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     }
-
 
     Scaffold(
         topBar = {
@@ -71,12 +73,12 @@ fun AmrapScreen(
                 onSelected = { viewModel.onCountdownSelected(it) }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TimerFormularySection(
+            TimerSection(
                 title = R.string.timer,
-                minutes = state.minutes,
-                seconds = state.seconds,
-                onMinutesChange = { viewModel.onMinutesChanged(it) },
-                onSecondsChange = { viewModel.onSecondsChanged(it) }
+                time = state.time,
+                stepInterval = STEP_INTERVAL_FOR_TIME_AMRAP,
+                endTime = LIMIT_FOR_TIME_AMRAP_MINUTES * ONE_MIN_IN_SEC,
+                onTimeChanged = { viewModel.onTimeChanged(it) },
             )
             Spacer(modifier = Modifier.height(16.dp))
             WorkoutSection(

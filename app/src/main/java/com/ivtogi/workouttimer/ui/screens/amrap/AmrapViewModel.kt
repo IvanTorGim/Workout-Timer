@@ -2,11 +2,7 @@ package com.ivtogi.workouttimer.ui.screens.amrap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_MINUTES
-import com.ivtogi.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_SECONDS
-import com.ivtogi.workouttimer.core.formatNumberField
-import com.ivtogi.workouttimer.core.toIntMinutes
-import com.ivtogi.workouttimer.core.toIntSeconds
+import com.ivtogi.workouttimer.core.toIntTime
 import com.ivtogi.workouttimer.domain.model.Timer
 import com.ivtogi.workouttimer.domain.repository.LocalStorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,22 +20,15 @@ class AmrapViewModel @Inject constructor(
     private var _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
 
-    fun onMinutesChanged(value: String) = _state.update {
-        it.copy(minutes = value.formatNumberField(0, LIMIT_FOR_TIME_AMRAP_MINUTES))
-    }
-
-    fun onSecondsChanged(value: String) = _state.update {
-        it.copy(seconds = value.formatNumberField(0, LIMIT_FOR_TIME_AMRAP_SECONDS))
-    }
+    fun onTimeChanged(value: String) = _state.update { it.copy(time = value) }
 
     fun onWorkoutChanged(value: String) = _state.update { it.copy(workout = value) }
 
     fun onCountdownSelected(value: Int) = _state.update { it.copy(countdown = value) }
 
     fun saveTimer(navigateToTimer: (Int) -> Unit) {
-        val initialTime = _state.value.minutes.toIntMinutes() + _state.value.seconds.toIntSeconds()
         val timer = Timer(
-            initial = initialTime,
+            initial = _state.value.time.toIntTime(),
             workout = _state.value.workout.replace(Regex("\\s+"), " "),
             type = Timer.Type.AMRAP,
             countdown = _state.value.countdown
@@ -53,8 +42,7 @@ class AmrapViewModel @Inject constructor(
 
 data class UiState(
     val countdown: Int = Timer.CountDown.TEN.seconds,
-    val minutes: String = "",
-    val seconds: String = "",
+    val time: String = "01:00",
     val rounds: Int = 1,
     val workout: String = "",
     val showDialog: Boolean = false
