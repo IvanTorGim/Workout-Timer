@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ivtogi.workouttimer"
+    namespace = "com.itortosagimeno.workouttimer"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ivtogi.workouttimer"
+        applicationId = "com.itortosagimeno.workouttimer"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
