@@ -17,14 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.itortosagimeno.workouttimer.MainActivity
 import com.itortosagimeno.workouttimer.R
+import com.itortosagimeno.workouttimer.domain.model.Timer
 import com.itortosagimeno.workouttimer.ui.screens.common.LargeButton
 
 @Composable
-fun HomeScreen(
-    onForTimeClick: () -> Unit,
-    onEmomClick: () -> Unit,
-    onAmrapClick: () -> Unit
-) {
+fun HomeScreen(onButtonClick: (Int) -> Unit) {
     val activity = LocalContext.current as? MainActivity
     LaunchedEffect(Unit) {
         activity?.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -44,15 +41,15 @@ fun HomeScreen(
         Column {
             LargeButton(
                 textRes = R.string.for_time,
-                onClick = onForTimeClick
+                onClick = { onButtonClick(Timer.Type.FOR_TIME.value) }
             )
             LargeButton(
                 textRes = R.string.emom,
-                onClick = onEmomClick
+                onClick = { onButtonClick(Timer.Type.EMOM.value) }
             )
             LargeButton(
                 textRes = R.string.amrap,
-                onClick = onAmrapClick
+                onClick = { onButtonClick(Timer.Type.AMRAP.value) }
             )
         }
         Spacer(modifier = Modifier.padding(1.dp))

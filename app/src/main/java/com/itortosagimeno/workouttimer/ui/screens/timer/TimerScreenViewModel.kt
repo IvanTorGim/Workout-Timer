@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.itortosagimeno.workouttimer.core.Constants.Companion.ONE_SEC_IN_MILLIS
+import com.itortosagimeno.workouttimer.core.navigation.TimerRoute
 import com.itortosagimeno.workouttimer.domain.model.Timer
 import com.itortosagimeno.workouttimer.domain.model.Timer.Type.AMRAP
 import com.itortosagimeno.workouttimer.domain.model.Timer.Type.EMOM
 import com.itortosagimeno.workouttimer.domain.model.Timer.Type.FOR_TIME
 import com.itortosagimeno.workouttimer.domain.repository.LocalStorageRepository
-import com.itortosagimeno.workouttimer.ui.screens.navigation.TimerRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

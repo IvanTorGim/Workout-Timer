@@ -1,4 +1,4 @@
-package com.itortosagimeno.workouttimer.ui.screens.amrap
+package com.itortosagimeno.workouttimer.ui.screens.select_timer
 
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.Column
@@ -22,21 +22,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-
 import com.itortosagimeno.workouttimer.MainActivity
 import com.itortosagimeno.workouttimer.R
-import com.itortosagimeno.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_MINUTES
-import com.itortosagimeno.workouttimer.core.Constants.Companion.ONE_MIN_IN_SEC
+import com.itortosagimeno.workouttimer.core.Constants.Companion.LIMIT_EMOM_SECONDS
+import com.itortosagimeno.workouttimer.core.Constants.Companion.LIMIT_FOR_TIME_AMRAP_SECONDS
+import com.itortosagimeno.workouttimer.core.Constants.Companion.STEP_INTERVAL_EMOM
 import com.itortosagimeno.workouttimer.core.Constants.Companion.STEP_INTERVAL_FOR_TIME_AMRAP
+import com.itortosagimeno.workouttimer.domain.model.Timer.Type.AMRAP
+import com.itortosagimeno.workouttimer.domain.model.Timer.Type.EMOM
+import com.itortosagimeno.workouttimer.domain.model.Timer.Type.FOR_TIME
 import com.itortosagimeno.workouttimer.ui.screens.common.CountdownSelector
 import com.itortosagimeno.workouttimer.ui.screens.common.LargeButton
+import com.itortosagimeno.workouttimer.ui.screens.common.RoundsSection
 import com.itortosagimeno.workouttimer.ui.screens.common.TimerSection
 import com.itortosagimeno.workouttimer.ui.screens.common.TopBar
 import com.itortosagimeno.workouttimer.ui.screens.common.WorkoutSection
 
 @Composable
-fun AmrapScreen(
-    viewModel: AmrapViewModel = hiltViewModel(),
+fun SelectTimerScreen(
+    viewModel: SelectTimerViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     navigateToTimer: (Int) -> Unit
 ) {
@@ -50,11 +54,16 @@ fun AmrapScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.amrap,
+                title = when (state.type) {
+                    FOR_TIME -> R.string.for_time
+                    EMOM -> R.string.emom
+                    AMRAP -> R.string.amrap
+                },
                 onBackClick = onBackClick
             )
         }
     ) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -63,7 +72,13 @@ fun AmrapScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = stringResource(id = R.string.amrap_description),
+                text = stringResource(
+                    id = when (state.type) {
+                        FOR_TIME -> R.string.for_time_description
+                        EMOM -> R.string.emom_description
+                        AMRAP -> R.string.amrap_description
+                    }
+                ),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -75,16 +90,32 @@ fun AmrapScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TimerSection(
-                title = R.string.timer,
+                title = when (state.type) {
+                    FOR_TIME, AMRAP -> R.string.timer
+                    EMOM -> R.string.every
+                },
                 time = state.time,
-                stepInterval = STEP_INTERVAL_FOR_TIME_AMRAP,
-                endTime = LIMIT_FOR_TIME_AMRAP_MINUTES * ONE_MIN_IN_SEC,
+                stepInterval = when (state.type) {
+                    FOR_TIME, AMRAP -> STEP_INTERVAL_FOR_TIME_AMRAP
+                    EMOM -> STEP_INTERVAL_EMOM
+                },
+                endTime = when (state.type) {
+                    FOR_TIME, AMRAP -> LIMIT_FOR_TIME_AMRAP_SECONDS
+                    EMOM -> LIMIT_EMOM_SECONDS
+                },
                 onTimeChanged = { viewModel.onTimeChanged(it) },
             )
+            if (state.type == EMOM) {
+                Spacer(modifier = Modifier.height(16.dp))
+                RoundsSection(
+                    rounds = state.rounds,
+                    onRoundsChanged = { viewModel.onRoundsChanged(it) }
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             WorkoutSection(
                 workout = state.workout,
-                onWorkoutChanged = { viewModel.onWorkoutChanged(it) },
+                onWorkoutChanged = { viewModel.onWorkoutChanged(it) }
             )
             Spacer(modifier = Modifier.weight(1f))
             LargeButton(

@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.itortosagimeno.workouttimer.ui.screens.navigation.Navigation
+import com.itortosagimeno.workouttimer.core.navigation.Navigation
 import com.itortosagimeno.workouttimer.ui.theme.WorkoutTimerTheme
 import dagger.hilt.android.AndroidEntryPoint
 

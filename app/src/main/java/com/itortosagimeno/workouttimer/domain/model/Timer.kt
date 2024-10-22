@@ -9,8 +9,8 @@ data class Timer(
     val type: Type = Type.FOR_TIME,
     val countdown: Int = CountDown.TEN.seconds
 ) {
-    enum class Type {
-        FOR_TIME, EMOM, AMRAP
+    enum class Type(val value: Int) {
+        FOR_TIME(1), EMOM(2), AMRAP(3)
     }
 
     enum class CountDown(val seconds: Int) {
